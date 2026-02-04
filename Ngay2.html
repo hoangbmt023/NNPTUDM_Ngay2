@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts & Comments</title>
+    <script src="Ngay2.js"></script>
+
+    <style>
+        /* ================= RESET ================= */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont,
+                "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background: #f2f2f2;
+            color: #111;
+            padding: 16px;
+        }
+
+        h2,
+        h3 {
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-size: 1.4rem;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            margin-top: 20px;
+        }
+
+        hr {
+            margin: 24px 0;
+            border: none;
+            border-top: 1px solid #ccc;
+        }
+
+        /* ================= LAYOUT ================= */
+        .container {
+            max-width: 1100px;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        .card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 16px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+        }
+
+        /* ================= TABLE ================= */
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 500px;
+        }
+
+        thead {
+            background: linear-gradient(180deg, #e5e5e5, #cfcfcf);
+        }
+
+        th,
+        td {
+            padding: 12px 14px;
+            text-align: left;
+            border-bottom: 1px solid #e5e5e5;
+            font-size: 0.9rem;
+        }
+
+        th {
+            color: #111;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.05em;
+        }
+
+        tbody tr:hover {
+            background: #f7f7f7;
+        }
+
+        tr.deleted td {
+            text-decoration: line-through;
+            color: #888;
+            background: #fafafa;
+        }
+
+        /* ================= FORM ================= */
+        .form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+            margin-top: 8px;
+        }
+
+        input[type="text"],
+        input[type="number"] {
+            padding: 10px 12px;
+            border-radius: 6px;
+            border: 1px solid #ccc;
+            font-size: 0.9rem;
+            transition: 0.2s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #000;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+        }
+
+        /* ================= BUTTON ================= */
+        .btn {
+            padding: 10px 14px;
+            border-radius: 6px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(180deg, #444, #000);
+            color: #fff;
+        }
+
+        .btn-primary:hover {
+            opacity: 0.85;
+        }
+
+        .btn-delete {
+            background: #111;
+            color: #fff;
+        }
+
+        .btn-delete:hover {
+            background: #000;
+        }
+
+        .badge-deleted {
+            font-size: 0.8rem;
+            color: #999;
+        }
+
+        /* ================= MOBILE ================= */
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+
+            h2 {
+                font-size: 1.2rem;
+            }
+
+            table {
+                min-width: 420px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- POSTS -->
+        <div class="card">
+            <h2>Posts</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Title</th>
+                            <th>Views</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="body_table"></tbody>
+                </table>
+            </div>
+
+            <h3>Add / Update Post</h3>
+            <div class="form">
+                <input type="text" id="id_txt" placeholder="ID (bỏ trống khi tạo mới)">
+                <input type="text" id="title_txt" placeholder="Title">
+                <input type="text" id="view_txt" placeholder="Views">
+                <input type="button" class="btn btn-primary" value="Save" onclick="Save()">
+            </div>
+        </div>
+
+        <!-- COMMENTS -->
+        <div class="card">
+            <h2>Comments</h2>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Text</th>
+                            <th>Post ID</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="comment_section"></tbody>
+                </table>
+            </div>
+
+            <h3>Add / Update Comment</h3>
+            <div class="form">
+                <input type="text" id="comment_id" placeholder="ID (bỏ trống khi tạo mới)">
+                <input type="text" id="comment_text" placeholder="Comment text">
+                <input type="number" id="comment_postId" placeholder="Post ID">
+                <input type="button" class="btn btn-primary" value="Save Comment" onclick="SaveComment()">
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>
